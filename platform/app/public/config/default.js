@@ -42,9 +42,9 @@ window.config = {
         qidoRoot: 'https://localhost:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
         wadoRoot: 'https://localhost:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
         qidoSupportsIncludeField: false,
-        imageRendering: 'wadors',
+        imageRendering: 'wadouri',
         enableStudyLazyLoad: true,
-        thumbnailRendering: 'wadors',
+        thumbnailRendering: 'wadouri',
         requestOptions: {
           auth: 'admin:admin',
         },
