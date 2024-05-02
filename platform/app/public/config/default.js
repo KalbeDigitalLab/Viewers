@@ -12,7 +12,6 @@ window.config = {
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
   strictZSpacingForVolumeViewport: true,
-  groupEnabledModesFirst: true,
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,
@@ -37,63 +36,27 @@ window.config = {
       namespace: '@ohif/extension-default.dataSourcesModule.dicomweb',
       sourceName: 'dicomweb',
       configuration: {
-        friendlyName: 'AWS S3 Static wado server',
-        name: 'aws',
-        wadoUriRoot: 'https://d33do7qe4w26qo.cloudfront.net/dicomweb',
-        qidoRoot: 'https://d33do7qe4w26qo.cloudfront.net/dicomweb',
-        wadoRoot: 'https://d33do7qe4w26qo.cloudfront.net/dicomweb',
+        friendlyName: 'DCM4CHEE Server',
+        name: 'DCM4CHEE',
+        wadoUriRoot: 'https://localhost:8443/dcm4chee-arc/aets/DCM4CHEE/wado',
+        qidoRoot: 'https://localhost:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
+        wadoRoot: 'https://localhost:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
-        thumbnailRendering: 'wadors',
         enableStudyLazyLoad: true,
-        supportsFuzzyMatching: false,
-        supportsWildcard: true,
-        staticWado: true,
-        singlepart: 'bulkdata,video',
+        thumbnailRendering: 'wadors',
+        requestOptions: {
+          auth: 'admin:admin',
+        },
+        dicomUploadEnabled: true,
+        singlepart: 'pdf,video',
         // whether the data source should use retrieveBulkData to grab metadata,
         // and in case of relative path, what would it be relative to, options
         // are in the series level or study level (some servers like series some study)
         bulkDataURI: {
           enabled: true,
-          relativeResolution: 'studies',
         },
         omitQuotationForMultipartRequest: true,
-      },
-    },
-    {
-      namespace: '@ohif/extension-default.dataSourcesModule.dicomweb',
-      sourceName: 'dicomweb2',
-      configuration: {
-        friendlyName: 'AWS S3 Static wado secondary server',
-        name: 'aws',
-        wadoUriRoot: 'https://d28o5kq0jsoob5.cloudfront.net/dicomweb',
-        qidoRoot: 'https://d28o5kq0jsoob5.cloudfront.net/dicomweb',
-        wadoRoot: 'https://d28o5kq0jsoob5.cloudfront.net/dicomweb',
-        qidoSupportsIncludeField: false,
-        supportsReject: false,
-        imageRendering: 'wadors',
-        thumbnailRendering: 'wadors',
-        enableStudyLazyLoad: true,
-        supportsFuzzyMatching: false,
-        supportsWildcard: true,
-        staticWado: true,
-        singlepart: 'bulkdata,video',
-        // whether the data source should use retrieveBulkData to grab metadata,
-        // and in case of relative path, what would it be relative to, options
-        // are in the series level or study level (some servers like series some study)
-        bulkDataURI: {
-          enabled: true,
-          relativeResolution: 'studies',
-        },
-        omitQuotationForMultipartRequest: true,
-      },
-    },
-    {
-      namespace: '@ohif/extension-default.dataSourcesModule.dicomwebproxy',
-      sourceName: 'dicomwebproxy',
-      configuration: {
-        friendlyName: 'dicomweb delegating proxy',
-        name: 'dicomwebproxy',
       },
     },
     {
@@ -138,6 +101,28 @@ window.config = {
   //       ))
   //   },
   // },
+  oidc: [
+    {
+
+      // REQUIRED
+      // Authorization Server URL
+      // (change) Match it with your hostname
+      authority: 'https://localhost:8843/realms/dcm4che',
+      client_id: 'ohif-viewer',
+      redirect_uri: 'http://localhost:3000/callback', // `OHIFStandaloneViewer.js`
+
+      // "Authorization Code Flow"
+      // Resource: https://medium.com/@darutk/diagrams-of-all-the-openid-connect-flows-6968e3990660
+
+      response_type: 'code',
+      scope: 'openid', // email profile openid
+
+      // OPTIONAL
+
+      post_logout_redirect_uri: '/logout-redirect.html',
+    },
+  ],
+
   hotkeys: [
     {
       commandName: 'incrementActiveViewport',
